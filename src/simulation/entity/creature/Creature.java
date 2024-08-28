@@ -1,6 +1,5 @@
 package simulation.entity.creature;
 
-import simulation.map.Coordinate;
 import simulation.entity.Entity;
 
 public abstract class Creature extends Entity {

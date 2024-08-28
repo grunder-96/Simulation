@@ -1,7 +1,5 @@
 package simulation.entity.creature;
 
-import simulation.map.Coordinate;
-
 public class Predator extends Creature {
 
     private int attack;
