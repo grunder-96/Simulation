@@ -6,18 +6,20 @@ import java.util.*;
 
 public class GameMap {
 
-    public static final int MAP_SIDE = 10;
+    public static final int START_COORDINATE = 1;
+    public static final int MAP_SIZE = 10;
 
     private Map<Coordinate, Entity> cells = new HashMap<>();
 
     public boolean isEntityExists(Coordinate coordinate) {
-        Optional<Entity> maybeEntity = Optional.ofNullable(cells.get(coordinate));
-        return cells.containsKey(coordinate) && maybeEntity.isEmpty();
+        return getEntity(coordinate).isPresent();
     }
 
-//    public void addEntity(Coordinate coordinate, Entity entity) {
-//        if (!isEntityExists(coordinate)) {
-//            cells.put(coordinate, entity);
-//        }
-//    }
+    public void putEntity(Coordinate coordinate, Entity entity) {
+        cells.put(coordinate, entity);
+    }
+
+    public Optional<Entity> getEntity(Coordinate coordinate) {
+        return Optional.ofNullable(cells.get(coordinate));
+    }
 }
