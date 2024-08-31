@@ -1,4 +1,4 @@
-package simulation.entity.object;
+package simulation.entity.fixed;
 
 import simulation.entity.Entity;
 
