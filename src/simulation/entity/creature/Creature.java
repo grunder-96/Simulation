@@ -13,4 +13,6 @@ public abstract class Creature extends Entity {
     }
 
     public abstract void makeMove();
+
+    public abstract <T extends Entity> Class<T> getTargetType();
 }
