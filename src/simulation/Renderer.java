@@ -5,20 +5,22 @@ import simulation.map.GameMap;
 
 public class Renderer {
 
-    private GameMap gameMap;
+    private GameMap map;
+    private static final String PLACEHOLDER = "\uD83D\uDFEB";
 
-    public Renderer(GameMap gameMap) {
-        this.gameMap = gameMap;
+    public Renderer(GameMap map) {
+        this.map = map;
     }
 
     public void render() {
-        for (int i = GameMap.MAP_SIDE; i >= 1; i--) {
-            for (int j = 1; j <= GameMap.MAP_SIDE; j++) {
-                if (gameMap.isEntityExists(new Coordinate(j, i))) {
-                    System.out.print("- ");
+        for (int i = GameMap.MAP_SIZE; i >= 1; i--) {
+            for (int j = 1; j <= GameMap.MAP_SIZE; j++) {
+                Coordinate coordinate = new Coordinate(j, i);
+                if (map.isEntityExists(coordinate)) {
+                    System.out.print(map.getEntity(coordinate).get() + " ");
                     continue;
                 }
-                System.out.print("* ");
+                System.out.print(PLACEHOLDER + " ");
             }
             System.out.println();
         }
