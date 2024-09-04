@@ -3,11 +3,12 @@ package simulation.map;
 import simulation.entity.Entity;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class GameMap {
 
     public static final int START_COORDINATE = 1;
-    public static final int MAP_SIZE = 10;
+    public static final int MAP_SIZE = 6;
 
     private Map<Coordinate, Entity> cells = new HashMap<>();
 
@@ -19,8 +20,19 @@ public class GameMap {
         cells.put(coordinate, entity);
     }
 
+    public void removeEntity(Coordinate coordinate) {
+        cells.remove(coordinate);
+    }
+
     public Optional<Entity> getEntity(Coordinate coordinate) {
         return Optional.ofNullable(cells.get(coordinate));
+    }
+
+    public Set<Coordinate> getCoordinatesByClass(Class<? extends Entity> targetClass) {
+        return cells.keySet().stream()
+                .filter(key -> Objects.nonNull(cells.get(key)))
+                .filter(key -> targetClass.isInstance(cells.get(key)))
+                .collect(Collectors.toSet());
     }
 
     public List<Coordinate> getSurroundingCoordinates(Coordinate coordinate) {
