@@ -14,10 +14,10 @@ public class TargetSearcher {
     private Queue<Coordinate> queue;
     private Set<Coordinate> alreadyVisited;
     private Map<Coordinate, Coordinate> route;
-    private GameMap gameMap;
+    private GameMap map;
 
-    public TargetSearcher(GameMap gameMap) {
-        this.gameMap = gameMap;
+    public TargetSearcher(GameMap map) {
+        this.map = map;
     }
 
     public <T extends Creature> List<Coordinate> findShortestWay(Coordinate originCoordinate, T creature) {
@@ -43,7 +43,7 @@ public class TargetSearcher {
 
         while (!queue.isEmpty()) {
             Coordinate currentCoordinate = queue.poll();
-            Optional<Entity> maybeEntity = gameMap.getEntity(currentCoordinate);
+            Optional<Entity> maybeEntity = map.getEntity(currentCoordinate);
             if (!(currentCoordinate.equals(originCoordinate)) &&
                 maybeEntity.isPresent() &&
                 maybeEntity.get().getClass().equals(targetClass)) {
@@ -60,12 +60,16 @@ public class TargetSearcher {
     }
 
     private <T extends Entity> List<Coordinate> findNeighbors(Coordinate coordinate, Class<T> targetClass) {
-        List<Coordinate> surroundingCoordinates = gameMap.getSurroundingCoordinates(coordinate);
-        List<Coordinate> empty = surroundingCoordinates.stream().filter(e -> !gameMap.isEntityExists(e)).toList();
+        List<Coordinate> surroundingCoordinates = map.getSurroundingCoordinates(coordinate);
+        List<Coordinate> empty = surroundingCoordinates.stream().filter(e -> !map.isEntityExists(e)).toList();
         List<Coordinate> target = surroundingCoordinates.stream()
                 .filter(e -> !empty.contains(e))
-                .filter(e -> gameMap.getEntity(e).get().getClass().equals(targetClass))
+                .filter(e -> map.getEntity(e).get().getClass().equals(targetClass))
                 .toList();
         return Stream.concat(empty.stream(), target.stream()).toList();
+    }
+
+    public GameMap getMap() {
+        return map;
     }
 }
