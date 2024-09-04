@@ -1,6 +1,8 @@
 package simulation.entity.creature;
 
+import simulation.TargetSearcher;
 import simulation.entity.Entity;
+import simulation.map.Coordinate;
 
 public abstract class Creature extends Entity {
 
@@ -12,7 +14,7 @@ public abstract class Creature extends Entity {
         this.health = health;
     }
 
-    public abstract void makeMove();
+    public abstract void makeMove(Coordinate coordinate, TargetSearcher searcher);
 
     public abstract <T extends Entity> Class<T> getTargetType();
 }
