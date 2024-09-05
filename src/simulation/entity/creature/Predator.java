@@ -12,12 +12,12 @@ public class Predator extends Creature {
     private int attack;
 
     public Predator() {
-        super(3,1);
+        super(4);
         attack = 2;
     }
 
-    public Predator(int speed, int health, int attack) {
-        super(speed, health);
+    public Predator(int health, int attack) {
+        super(health);
         this.attack = attack;
     }
 

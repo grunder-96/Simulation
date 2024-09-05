@@ -10,8 +10,8 @@ public abstract class Creature extends Entity {
     private int speed;
     private int health;
 
-    public Creature(int speed, int health) {
-        this.speed = speed;
+    public Creature(int health) {
+        this.speed = 1;
         this.health = health;
     }
 

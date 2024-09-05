@@ -14,11 +14,11 @@ public class Herbivore extends Creature {
     private TargetSearcher searcher;
 
     public Herbivore() {
-        super(2, 5);
+        super(6);
     }
 
-    public Herbivore(int speed, int health) {
-        super(speed, health);
+    public Herbivore(int health) {
+        super(health);
     }
 
     @Override
