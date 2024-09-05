@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 public class GameMap {
 
     public static final int START_COORDINATE = 1;
-    public static final int MAP_SIZE = 6;
+    public static final int MAP_SIZE = 15;
 
     private Map<Coordinate, Entity> cells = new HashMap<>();
 
@@ -28,10 +28,10 @@ public class GameMap {
         return Optional.ofNullable(cells.get(coordinate));
     }
 
-    public Set<Coordinate> getCoordinatesByClass(Class<? extends Entity> targetClass) {
+    public Set<Coordinate> getCoordinatesByType(Class<? extends Entity> clazz) {
         return cells.keySet().stream()
                 .filter(key -> Objects.nonNull(cells.get(key)))
-                .filter(key -> targetClass.isInstance(cells.get(key)))
+                .filter(key -> clazz.isInstance(cells.get(key)))
                 .collect(Collectors.toSet());
     }
 
