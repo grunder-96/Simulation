@@ -22,6 +22,13 @@ public class Simulation {
         while (!isSimulationOver) {
             nextTurn();
         }
+        showLastIteration();
+    }
+
+    private void showLastIteration() {
+        System.out.println("current step: " + simulationStepCounter);
+        renderer.render();
+        System.out.println("Симуляция завершена");
     }
 
     private void nextTurn() {
@@ -30,7 +37,7 @@ public class Simulation {
         moveCreaturesAction.doAction();
         simulationStepCounter++;
         try {
-            Thread.sleep(1500);
+            Thread.sleep(1100);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

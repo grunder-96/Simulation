@@ -47,10 +47,10 @@ public class PopulateMapAction extends InitAction {
         int predatorQuantity = entitiesQuantity / 20;
         map.put(1, predatorQuantity);
 
-        int herbivoreQuantity = entitiesQuantity / 4;
+        int herbivoreQuantity = entitiesQuantity / 10;
         map.put(2, herbivoreQuantity);
 
-        int grassQuantity = entitiesQuantity / 10 * 4;
+        int grassQuantity = entitiesQuantity / 10 * 6;
         map.put(3, grassQuantity);
 
         int rockQuantity = entitiesQuantity / 10;

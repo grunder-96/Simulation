@@ -6,6 +6,6 @@ public class Grass extends Entity implements Fixed {
 
     @Override
     public String toString() {
-        return "\uD83C\uDF3F";
+        return "\uD83D\uDFE9";
     }
 }

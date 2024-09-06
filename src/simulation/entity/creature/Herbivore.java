@@ -27,6 +27,11 @@ public class Herbivore extends Creature {
         if (shortestWay.isEmpty()) {
             return;
         }
+        if (shortestWay.size() == 1) {
+            map.removeEntity(shortestWay.getFirst());
+            ((Creature) (map.getEntity(coordinate).get())).increaseHealth(1);
+            return;
+        }
         map.removeEntity(coordinate);
         map.putEntity(shortestWay.getFirst(), this);
     }

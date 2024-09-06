@@ -32,6 +32,7 @@ public class TargetSearcher {
             way.add(previousCoordinate);
             previousCoordinate = route.get(previousCoordinate);
         }
+        way.removeLast();
         return way.reversed();
     }
 

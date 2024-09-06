@@ -28,7 +28,11 @@ public class Predator extends Creature {
             return;
         }
         if (shortestWay.size() == 1) {
-            map.removeEntity(shortestWay.getFirst());
+            Creature creature = (Creature) map.getEntity(shortestWay.getFirst()).get();
+            creature.decreaseHealth(attack);
+            if (creature.isDead) {
+                map.removeEntity(shortestWay.getFirst());
+            }
             return;
         }
         map.removeEntity(coordinate);
