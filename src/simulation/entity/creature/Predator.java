@@ -23,20 +23,16 @@ public class Predator extends Creature {
 
     @Override
     public void makeMove(Coordinate coordinate, GameMap map, TargetSearcher searcher) {
-        List<Coordinate> shortestWay = searcher.findShortestWay(coordinate, this);
-        if (shortestWay.isEmpty()) {
-            return;
+        moveToEntity(coordinate, map, searcher);
+    }
+
+    @Override
+    public void eat(GameMap map, Coordinate sourceCoordinate, Coordinate targetCoordinate) {
+        Creature creature = (Creature) map.getEntity(targetCoordinate).get();
+        creature.decreaseHealth(attack);
+        if (creature.isDead) {
+            map.removeEntity(targetCoordinate);
         }
-        if (shortestWay.size() == 1) {
-            Creature creature = (Creature) map.getEntity(shortestWay.getFirst()).get();
-            creature.decreaseHealth(attack);
-            if (creature.isDead) {
-                map.removeEntity(shortestWay.getFirst());
-            }
-            return;
-        }
-        map.removeEntity(coordinate);
-        map.putEntity(shortestWay.getFirst(), this);
     }
 
     @Override

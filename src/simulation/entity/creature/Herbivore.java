@@ -23,17 +23,13 @@ public class Herbivore extends Creature {
 
     @Override
     public void makeMove(Coordinate coordinate, GameMap map, TargetSearcher searcher) {
-        List<Coordinate> shortestWay = searcher.findShortestWay(coordinate, this);
-        if (shortestWay.isEmpty()) {
-            return;
-        }
-        if (shortestWay.size() == 1) {
-            map.removeEntity(shortestWay.getFirst());
-            ((Creature) (map.getEntity(coordinate).get())).increaseHealth(1);
-            return;
-        }
-        map.removeEntity(coordinate);
-        map.putEntity(shortestWay.getFirst(), this);
+        moveToEntity(coordinate, map, searcher);
+    }
+
+    @Override
+    public void eat(GameMap map, Coordinate sourceCoordinate, Coordinate targetCoordinate) {
+        map.removeEntity(targetCoordinate);
+        ((Creature) (map.getEntity(sourceCoordinate).get())).increaseHealth(1);
     }
 
     @Override

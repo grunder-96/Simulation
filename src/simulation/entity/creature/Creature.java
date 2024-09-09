@@ -5,6 +5,8 @@ import simulation.entity.Entity;
 import simulation.map.Coordinate;
 import simulation.map.GameMap;
 
+import java.util.List;
+
 public abstract class Creature extends Entity {
 
     private int speed;
@@ -29,6 +31,21 @@ public abstract class Creature extends Entity {
     }
 
     public abstract void makeMove(Coordinate coordinate, GameMap map, TargetSearcher searcher);
+
+    protected void moveToEntity(Coordinate coordinate, GameMap map, TargetSearcher searcher) {
+        List<Coordinate> shortestWay = searcher.findShortestWay(coordinate, this);
+        if (shortestWay.isEmpty()) {
+            return;
+        }
+        if (shortestWay.size() == 1) {
+            eat(map, coordinate, shortestWay.getFirst());
+            return;
+        }
+        map.removeEntity(coordinate);
+        map.putEntity(shortestWay.getFirst(), this);
+    }
+
+    public abstract void eat(GameMap map, Coordinate sourceCoordinate, Coordinate targetCoordinate);
 
     public abstract <T extends Entity> Class<T> getTargetType();
 }
