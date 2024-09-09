@@ -6,6 +6,8 @@ import simulation.action.turn.MoveCreaturesAction;
 import simulation.entity.creature.Herbivore;
 import simulation.map.GameMap;
 
+import java.util.concurrent.TimeUnit;
+
 public class Simulation {
 
     GameMap map = new GameMap();
@@ -19,29 +21,28 @@ public class Simulation {
 
     public void startSimulation() {
         populateMapAction.doAction();
+        showSimulationStep();
         while (!isSimulationOver) {
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
             nextTurn();
         }
-        showLastIteration();
-    }
-
-    private void showLastIteration() {
-        System.out.println("current step: " + simulationStepCounter);
-        renderer.render();
-        System.out.println("Симуляция завершена");
+        System.out.println("simulation is over");
     }
 
     private void nextTurn() {
-        System.out.println("current step: " + simulationStepCounter);
-        renderer.render();
         moveCreaturesAction.doAction();
         simulationStepCounter++;
-        try {
-            Thread.sleep(1100);
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
+        showSimulationStep();
         updateIsSimulationOver();
+    }
+
+    private void showSimulationStep() {
+        System.out.println("simulation step: " + simulationStepCounter);
+        renderer.render();
     }
 
     private void updateIsSimulationOver() {
