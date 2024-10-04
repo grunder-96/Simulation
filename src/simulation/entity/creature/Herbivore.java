@@ -29,7 +29,8 @@ public class Herbivore extends Creature {
     @Override
     public void eat(GameMap map, Coordinate sourceCoordinate, Coordinate targetCoordinate) {
         map.removeEntity(targetCoordinate);
-        ((Creature) (map.getEntity(sourceCoordinate).get())).increaseHealth(1);
+        Creature creature  = (Creature) map.getEntity(sourceCoordinate).get();
+        creature.increaseHealth(1);
     }
 
     @Override
