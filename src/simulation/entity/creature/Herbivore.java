@@ -1,13 +1,9 @@
 package simulation.entity.creature;
 
 import simulation.TargetSearcher;
-import simulation.entity.Entity;
 import simulation.entity.Grass;
 import simulation.map.Coordinate;
 import simulation.map.GameMap;
-
-import java.lang.annotation.Target;
-import java.util.List;
 
 public class Herbivore extends Creature {
 
