@@ -1,8 +1,6 @@
 package simulation.entity;
 
-import simulation.entity.fixed.Fixed;
-
-public class Grass extends Entity implements Fixed {
+public class Grass extends Entity {
 
     @Override
     public String toString() {

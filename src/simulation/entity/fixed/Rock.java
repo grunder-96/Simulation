@@ -2,7 +2,7 @@ package simulation.entity.fixed;
 
 import simulation.entity.Entity;
 
-public class Rock extends Entity implements Fixed {
+public class Rock extends Entity {
 
     @Override
     public String toString() {
