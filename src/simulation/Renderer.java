@@ -5,7 +5,7 @@ import simulation.map.GameMap;
 
 public class Renderer {
 
-    private GameMap map;
+    private final GameMap map;
     private static final String PLACEHOLDER = "\uD83D\uDFEB";
 
     public Renderer(GameMap map) {
