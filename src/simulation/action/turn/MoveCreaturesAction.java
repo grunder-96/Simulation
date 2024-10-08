@@ -18,7 +18,8 @@ public class MoveCreaturesAction extends TurnAction {
         Set<Coordinate> creatureCoordinates = map.getCoordinatesByType(Creature.class);
         for (Coordinate coordinate : creatureCoordinates) {
             if (map.isEntityExists(coordinate)) {
-                ((Creature) map.getEntity(coordinate).get()).makeMove(coordinate, map, searcher);
+                Creature creature = (Creature) map.getEntity(coordinate).get();
+                creature.makeMove(coordinate, map, searcher);
             }
         }
     }

@@ -33,7 +33,7 @@ public abstract class Creature extends Entity {
     public abstract void makeMove(Coordinate coordinate, GameMap map, TargetSearcher searcher);
 
     protected void moveToEntity(Coordinate coordinate, GameMap map, TargetSearcher searcher) {
-        List<Coordinate> shortestWay = searcher.findShortestWay(coordinate, this);
+        List<Coordinate> shortestWay = searcher.findShortestWay(coordinate, this.getTargetType());
         if (shortestWay.isEmpty()) {
             return;
         }

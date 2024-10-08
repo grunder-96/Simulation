@@ -1,76 +1,81 @@
 package simulation;
 
 import simulation.entity.Entity;
-import simulation.entity.creature.Creature;
 import simulation.map.Coordinate;
 import simulation.map.GameMap;
 
 import java.util.*;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class TargetSearcher {
 
     private Queue<Coordinate> queue;
     private Set<Coordinate> alreadyVisited;
-    private Map<Coordinate, Coordinate> route;
+    private Map<Coordinate, Coordinate> previousCoordinateMap;
     private GameMap map;
 
     public TargetSearcher(GameMap map) {
         this.map = map;
     }
 
-    public <T extends Creature> List<Coordinate> findShortestWay(Coordinate originCoordinate, T creature) {
-        Optional<Coordinate> maybeCoordinate = findNearestCoordinate(originCoordinate, creature.getTargetType());
-        if (maybeCoordinate.isEmpty()) {
-            return Collections.emptyList();
-        }
+    public <T extends Entity> List<Coordinate> findShortestWay(Coordinate coordinate, Class<T> targetClass) {
+        Optional<Coordinate> maybeCoordinate = findNearestCoordinate(coordinate, targetClass);
+        return maybeCoordinate.isEmpty() ?
+                Collections.emptyList() : constructWay(maybeCoordinate.get());
+    }
+
+    private List<Coordinate> constructWay(Coordinate coordinate) {
         List<Coordinate> way = new ArrayList<>();
-        way.add(maybeCoordinate.get());
-        Coordinate previousCoordinate = route.get(maybeCoordinate.get());
+        way.add(coordinate);
+        Coordinate previousCoordinate = previousCoordinateMap.get(coordinate);
         while (Objects.nonNull(previousCoordinate)) {
             way.add(previousCoordinate);
-            previousCoordinate = route.get(previousCoordinate);
+            previousCoordinate = previousCoordinateMap.get(previousCoordinate);
         }
         way.removeLast();
         return way.reversed();
     }
 
-    private  <T extends Entity> Optional<Coordinate> findNearestCoordinate(Coordinate originCoordinate, Class<T> targetClass) {
-        queue = new LinkedList<>();
-        queue.add(originCoordinate);
-        alreadyVisited = new HashSet<>();
-        route = new HashMap<>();
-
+    private  <T extends Entity> Optional<Coordinate> findNearestCoordinate(Coordinate coordinate, Class<T> targetClass) {
+        resetFindVariables();
+        queue.add(coordinate);
         while (!queue.isEmpty()) {
             Coordinate currentCoordinate = queue.poll();
             Optional<Entity> maybeEntity = map.getEntity(currentCoordinate);
-            if (!(currentCoordinate.equals(originCoordinate)) &&
+            if (!(currentCoordinate.equals(coordinate)) &&
                 maybeEntity.isPresent() &&
-                maybeEntity.get().getClass().equals(targetClass)) {
+                targetClass.isAssignableFrom(maybeEntity.get().getClass())) {
                 return Optional.of(currentCoordinate);
             }
             alreadyVisited.add(currentCoordinate);
-            List<Coordinate> neighbors = new ArrayList<>(findNeighbors(currentCoordinate, targetClass));
-            neighbors.removeAll(alreadyVisited);
-            neighbors.removeAll(queue);
-            neighbors.forEach(neighbor -> route.put(neighbor, currentCoordinate));
-            queue.addAll(neighbors);
+            List<Coordinate> neighbors = findNeighbors(currentCoordinate, targetClass);
+            neighbors.stream()
+                    .filter(Predicate.not(previousCoordinateMap::containsKey))
+                    .forEach(neighbor -> {
+                        previousCoordinateMap.put(neighbor, currentCoordinate);
+                        queue.add(neighbor);
+                    });
         }
         return Optional.empty();
     }
 
-    private <T extends Entity> List<Coordinate> findNeighbors(Coordinate coordinate, Class<T> targetClass) {
-        List<Coordinate> surroundingCoordinates = map.getSurroundingCoordinates(coordinate);
-        List<Coordinate> empty = surroundingCoordinates.stream().filter(e -> !map.isEntityExists(e)).toList();
-        List<Coordinate> target = surroundingCoordinates.stream()
-                .filter(e -> !empty.contains(e))
-                .filter(e -> map.getEntity(e).get().getClass().equals(targetClass))
-                .toList();
-        return Stream.concat(empty.stream(), target.stream()).toList();
+    private void resetFindVariables() {
+        queue = new LinkedList<>();
+        alreadyVisited = new HashSet<>();
+        previousCoordinateMap = new HashMap<>();
     }
 
-    public GameMap getMap() {
-        return map;
+    private <T extends Entity> List<Coordinate> findNeighbors(Coordinate coordinate, Class<T> targetClass) {
+        List<Coordinate> surroundingCoordinates = map.getSurroundingCoordinates(coordinate);
+        return surroundingCoordinates.stream()
+                .filter(c -> isValidNeighbor(c, targetClass))
+                .collect(Collectors.toList());
+    }
+
+    private <T extends Entity> boolean isValidNeighbor(Coordinate coordinate, Class<T> targetClass) {
+        return !map.isEntityExists(coordinate) ||
+               targetClass.isAssignableFrom(map.getEntity(coordinate).get().getClass());
     }
 }
