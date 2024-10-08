@@ -31,10 +31,16 @@ public class GameMap {
     }
 
     public void putEntity(Coordinate coordinate, Entity entity) {
+        if (!isWithinMapBounds(coordinate)) {
+            throw new IllegalArgumentException("coordinate outside the game map");
+        }
         cells.put(coordinate, entity);
     }
 
     public void removeEntity(Coordinate coordinate) {
+        if (!isEntityExists(coordinate)) {
+            throw new NoSuchElementException("map does not contain an entity at the given coordinate");
+        }
         cells.remove(coordinate);
     }
 
