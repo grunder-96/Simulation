@@ -24,7 +24,7 @@ public class Simulation {
         this.map = Objects.requireNonNull(map, "the map was not passed to the constructor");
         this.searcher = new TargetSearcher(map);
         this.renderer = new Renderer(map);
-        this.populateMapAction = new PopulateMapAction(map, searcher);
+        this.populateMapAction = new PopulateMapAction(map);
         this.moveCreaturesAction = new MoveCreaturesAction(map, searcher);
     }
 

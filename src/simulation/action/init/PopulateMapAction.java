@@ -1,6 +1,5 @@
 package simulation.action.init;
 
-import simulation.TargetSearcher;
 import simulation.entity.Entity;
 import simulation.entity.Grass;
 import simulation.entity.creature.Herbivore;
@@ -18,8 +17,8 @@ public class PopulateMapAction extends InitAction {
 
     private static final double MAP_LOAD_FACTOR = 0.7d;
 
-    public PopulateMapAction(GameMap map, TargetSearcher searcher) {
-        super(map, searcher);
+    public PopulateMapAction(GameMap map) {
+        super(map);
     }
 
     @Override
