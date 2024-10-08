@@ -13,8 +13,8 @@ public class Renderer {
     }
 
     public void render() {
-        for (int i = GameMap.MAP_SIZE; i >= 1; i--) {
-            for (int j = 1; j <= GameMap.MAP_SIZE; j++) {
+        for (int i = map.yAxisSize(); i >= 1; i--) {
+            for (int j = 1; j <= map.xAxisSize(); j++) {
                 Coordinate coordinate = new Coordinate(j, i);
                 if (map.isEntityExists(coordinate)) {
                     System.out.print(map.getEntity(coordinate).get() + " ");

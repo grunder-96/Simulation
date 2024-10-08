@@ -63,7 +63,7 @@ public class PopulateMapAction extends InitAction {
     }
 
     private int calculateEntitiesQuantity() {
-        double mapArea = Math.pow(GameMap.MAP_SIZE, 2);
+        double mapArea = map.xAxisSize() * map.yAxisSize();
         return (int) (mapArea * MAP_LOAD_FACTOR);
     }
 
@@ -71,8 +71,8 @@ public class PopulateMapAction extends InitAction {
         Random random = new Random();
         Coordinate coordinate = null;
         do {
-            int x = random.nextInt(GameMap.START_COORDINATE, GameMap.MAP_SIZE + 1);
-            int y = random.nextInt(GameMap.START_COORDINATE, GameMap.MAP_SIZE + 1);
+            int x = random.nextInt(GameMap.STARTING_POINT, map.xAxisSize() + 1);
+            int y = random.nextInt(GameMap.STARTING_POINT, map.yAxisSize() + 1);
             coordinate = new Coordinate(x, y);
         } while (map.isEntityExists(coordinate));
         return coordinate;

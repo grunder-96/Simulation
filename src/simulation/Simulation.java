@@ -6,18 +6,27 @@ import simulation.action.turn.MoveCreaturesAction;
 import simulation.entity.creature.Herbivore;
 import simulation.map.GameMap;
 
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 public class Simulation {
 
-    GameMap map = new GameMap();
-    TargetSearcher searcher = new TargetSearcher(map);
-    private Renderer renderer = new Renderer(map);
-    private boolean isSimulationOver;
+    private final GameMap map;
+    private final TargetSearcher searcher;
+    private final Renderer renderer;
+
     private int simulationStepCounter;
 
-    private Action populateMapAction = new PopulateMapAction(map, searcher);
-    private Action moveCreaturesAction = new MoveCreaturesAction(map, searcher);
+    private final Action populateMapAction;
+    private final Action moveCreaturesAction;
+
+    public Simulation(GameMap map) {
+        this.map = Objects.requireNonNull(map, "the map was not passed to the constructor");
+        this.searcher = new TargetSearcher(map);
+        this.renderer = new Renderer(map);
+        this.populateMapAction = new PopulateMapAction(map, searcher);
+        this.moveCreaturesAction = new MoveCreaturesAction(map, searcher);
+    }
 
     public void startSimulation() {
         populateMapAction.doAction();

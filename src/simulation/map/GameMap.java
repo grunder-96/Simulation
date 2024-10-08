@@ -7,10 +7,24 @@ import java.util.stream.Collectors;
 
 public class GameMap {
 
-    public static final int START_COORDINATE = 1;
-    public static final int MAP_SIZE = 15;
+    public static final int STARTING_POINT = 1;
+    private final int xAxisSize;
+    private final int yAxisSize;
 
-    private Map<Coordinate, Entity> cells = new HashMap<>();
+    private final Map<Coordinate, Entity> cells = new HashMap<>();
+
+    public GameMap(int xAxisSize, int yAxisSize) {
+        checkAxisSizes(xAxisSize, yAxisSize);
+        this.xAxisSize = xAxisSize;
+        this.yAxisSize = yAxisSize;
+    }
+
+    private void checkAxisSizes(int xAxisSize, int yAxisSize) {
+        if (xAxisSize > 0 && yAxisSize > 0) {
+            return;
+        }
+        throw new IllegalArgumentException("axis size(-s) must be greater than zero");
+    }
 
     public boolean isEntityExists(Coordinate coordinate) {
         return getEntity(coordinate).isPresent();
@@ -41,11 +55,11 @@ public class GameMap {
         int y = coordinate.getY();
 
         for (int i = x - 1; i <= x + 1; i++) {
-            if (!isWithinMapBounds(i)) {
+            if (!isWithinAxisSize(i, xAxisSize)) {
                 continue;
             }
             for (int j = y - 1; j <= y + 1; j++) {
-                if (!isWithinMapBounds(j) || (x == i && y == j)) {
+                if (!isWithinAxisSize(j, yAxisSize) || (x == i && y == j)) {
                     continue;
                 }
                 Coordinate adjacentCoordinate = new Coordinate(i, j);
@@ -55,7 +69,21 @@ public class GameMap {
         return surroundingCoordinates;
     }
 
-    private boolean isWithinMapBounds(int i) {
-        return i >= GameMap.START_COORDINATE && i <= GameMap.MAP_SIZE;
+    private boolean isWithinAxisSize(int axisPoint, int axisSize) {
+        return axisPoint >= GameMap.STARTING_POINT && axisPoint <= axisSize;
+    }
+
+    private boolean isWithinMapBounds(Coordinate coordinate) {
+        Objects.requireNonNull(coordinate, "coordinate should not be null");
+        return isWithinAxisSize(coordinate.getX(), xAxisSize) &&
+               isWithinAxisSize(coordinate.getY(), yAxisSize);
+    }
+
+    public int xAxisSize() {
+        return xAxisSize;
+    }
+
+    public int yAxisSize() {
+        return yAxisSize;
     }
 }
