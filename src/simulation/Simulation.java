@@ -31,7 +31,7 @@ public class Simulation {
     public void startSimulation() {
         populateMapAction.doAction();
         showSimulationStep();
-        while (!isSimulationOver) {
+        while (!isSimulationOver()) {
             try {
                 TimeUnit.SECONDS.sleep(2);
             } catch (InterruptedException e) {
@@ -46,7 +46,6 @@ public class Simulation {
         moveCreaturesAction.doAction();
         simulationStepCounter++;
         showSimulationStep();
-        updateIsSimulationOver();
     }
 
     private void showSimulationStep() {
@@ -54,7 +53,7 @@ public class Simulation {
         renderer.render();
     }
 
-    private void updateIsSimulationOver() {
-        isSimulationOver = map.getCoordinatesByType(Herbivore.class).isEmpty();
+    private boolean isSimulationOver() {
+        return map.getCoordinatesByType(Herbivore.class).isEmpty();
     }
 }
