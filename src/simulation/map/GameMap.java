@@ -55,34 +55,16 @@ public class GameMap {
                 .collect(Collectors.toSet());
     }
 
-    public List<Coordinate> getSurroundingCoordinates(Coordinate coordinate) {
-        List<Coordinate> surroundingCoordinates = new ArrayList<>();
-        int x = coordinate.getX();
-        int y = coordinate.getY();
-
-        for (int i = x - 1; i <= x + 1; i++) {
-            if (!isWithinAxisSize(i, xAxisSize)) {
-                continue;
-            }
-            for (int j = y - 1; j <= y + 1; j++) {
-                if (!isWithinAxisSize(j, yAxisSize) || (x == i && y == j)) {
-                    continue;
-                }
-                Coordinate adjacentCoordinate = new Coordinate(i, j);
-                surroundingCoordinates.add(adjacentCoordinate);
-            }
-        }
-        return surroundingCoordinates;
+    public boolean isWithinMapBound(int axisCoordinate, Axises axis) {
+        Objects.requireNonNull(axis, "axis should not be null");
+        int axisSize = axis.equals(Axises.X) ? xAxisSize : yAxisSize;
+        return axisCoordinate >= GameMap.STARTING_POINT && axisCoordinate <= axisSize;
     }
 
-    private boolean isWithinAxisSize(int axisPoint, int axisSize) {
-        return axisPoint >= GameMap.STARTING_POINT && axisPoint <= axisSize;
-    }
-
-    private boolean isWithinMapBounds(Coordinate coordinate) {
+    public boolean isWithinMapBounds(Coordinate coordinate) {
         Objects.requireNonNull(coordinate, "coordinate should not be null");
-        return isWithinAxisSize(coordinate.getX(), xAxisSize) &&
-               isWithinAxisSize(coordinate.getY(), yAxisSize);
+        return isWithinMapBound(coordinate.getX(), Axises.X) &&
+               isWithinMapBound(coordinate.getY(), Axises.Y);
     }
 
     public int xAxisSize() {

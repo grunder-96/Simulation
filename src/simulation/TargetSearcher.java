@@ -1,6 +1,7 @@
 package simulation;
 
 import simulation.entity.Entity;
+import simulation.map.Axises;
 import simulation.map.Coordinate;
 import simulation.map.GameMap;
 
@@ -68,10 +69,30 @@ public class TargetSearcher {
     }
 
     private <T extends Entity> List<Coordinate> findNeighbors(Coordinate coordinate, Class<T> targetClass) {
-        List<Coordinate> surroundingCoordinates = map.getSurroundingCoordinates(coordinate);
+        List<Coordinate> surroundingCoordinates = getSurroundingCoordinates(coordinate);
         return surroundingCoordinates.stream()
                 .filter(c -> isValidNeighbor(c, targetClass))
                 .collect(Collectors.toList());
+    }
+
+    public List<Coordinate> getSurroundingCoordinates(Coordinate coordinate) {
+        List<Coordinate> surroundingCoordinates = new ArrayList<>();
+        int x = coordinate.getX();
+        int y = coordinate.getY();
+
+        for (int i = x - 1; i <= x + 1; i++) {
+            if (!map.isWithinMapBound(i, Axises.X)) {
+                continue;
+            }
+            for (int j = y - 1; j <= y + 1; j++) {
+                if (!map.isWithinMapBound(j, Axises.Y) || (x == i && y == j)) {
+                    continue;
+                }
+                Coordinate adjacentCoordinate = new Coordinate(i, j);
+                surroundingCoordinates.add(adjacentCoordinate);
+            }
+        }
+        return surroundingCoordinates;
     }
 
     private <T extends Entity> boolean isValidNeighbor(Coordinate coordinate, Class<T> targetClass) {
