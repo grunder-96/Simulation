@@ -55,16 +55,14 @@ public class GameMap {
                 .collect(Collectors.toSet());
     }
 
-    public boolean isWithinMapBound(int axisCoordinate, Axises axis) {
-        Objects.requireNonNull(axis, "axis should not be null");
-        int axisSize = axis.equals(Axises.X) ? xAxisSize : yAxisSize;
+    public boolean isWithinMapBound(int axisCoordinate, int axisSize) {
         return axisCoordinate >= GameMap.STARTING_POINT && axisCoordinate <= axisSize;
     }
 
     public boolean isWithinMapBounds(Coordinate coordinate) {
         Objects.requireNonNull(coordinate, "coordinate should not be null");
-        return isWithinMapBound(coordinate.getX(), Axises.X) &&
-               isWithinMapBound(coordinate.getY(), Axises.Y);
+        return isWithinMapBound(coordinate.getX(), xAxisSize) &&
+               isWithinMapBound(coordinate.getY(), yAxisSize);
     }
 
     public int xAxisSize() {

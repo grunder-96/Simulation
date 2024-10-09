@@ -81,11 +81,11 @@ public class TargetSearcher {
         int y = coordinate.getY();
 
         for (int i = x - 1; i <= x + 1; i++) {
-            if (!map.isWithinMapBound(i, Axises.X)) {
+            if (!map.isWithinMapBound(i, map.xAxisSize())) {
                 continue;
             }
             for (int j = y - 1; j <= y + 1; j++) {
-                if (!map.isWithinMapBound(j, Axises.Y) || (x == i && y == j)) {
+                if (!map.isWithinMapBound(j, map.yAxisSize()) || (x == i && y == j)) {
                     continue;
                 }
                 Coordinate adjacentCoordinate = new Coordinate(i, j);
