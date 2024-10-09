@@ -36,11 +36,6 @@ public class Predator extends Creature {
     }
 
     @Override
-    public String toString() {
-        return "\uD83D\uDC3A";
-    }
-
-    @Override
     public Class<Herbivore> getTargetType() {
         return Herbivore.class;
     }
