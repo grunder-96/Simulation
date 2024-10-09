@@ -5,6 +5,7 @@ import simulation.action.init.PopulateMapAction;
 import simulation.action.turn.MoveCreaturesAction;
 import simulation.entity.creature.Herbivore;
 import simulation.map.GameMap;
+import simulation.render.Renderer;
 
 import java.util.Objects;
 import java.util.concurrent.TimeUnit;

@@ -1,5 +1,6 @@
-package simulation;
+package simulation.render;
 
+import simulation.entity.Entity;
 import simulation.map.Coordinate;
 import simulation.map.GameMap;
 
@@ -16,11 +17,13 @@ public class Renderer {
         for (int i = map.yAxisSize(); i >= 1; i--) {
             for (int j = 1; j <= map.xAxisSize(); j++) {
                 Coordinate coordinate = new Coordinate(j, i);
-                if (map.isEntityExists(coordinate)) {
-                    System.out.print(map.getEntity(coordinate).get() + " ");
-                    continue;
+                if (!map.isEntityExists(coordinate)) {
+                    System.out.print(PLACEHOLDER);
+                } else {
+                    Entity entity = map.getEntity(coordinate).get();
+                    String upperCaseName = entity.getClass().getSimpleName().toUpperCase();
+                    System.out.print(Sprites.valueOf(upperCaseName).getSprite());
                 }
-                System.out.print(PLACEHOLDER + " ");
             }
             System.out.println();
         }
